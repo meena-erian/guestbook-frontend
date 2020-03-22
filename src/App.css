@@ -156,3 +156,7 @@ body{
   display: none;
   max-width: 100px;
 }
+
+.badInput{
+  box-shadow: 0 0 19px red;
+}
