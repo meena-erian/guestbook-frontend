@@ -1,27 +1,10 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import LoginPage from './components/LoginPage.js';
+import MainPage from './components/MainPage.js';
 
 
-class MainPage extends React.Component {
-  render() {
-    return (
-      <div>
-        <h1>Welcome {this.props.login}</h1>
-      </div>
-    );
-  }
-}
-
-class LoginPage extends React.Component {
-  render() {
-    return (
-      <div>
-        <h1>Login to continue</h1>
-      </div>
-    );
-  }
-}
 
 class App extends React.Component {
   constructor(props) {
