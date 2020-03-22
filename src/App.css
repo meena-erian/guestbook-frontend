@@ -54,3 +54,82 @@
   border-radius: 7px;
   background-color: dimgray;
 }
+
+.navBar {
+  top: 0;
+  height: 50px;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.navBar h2 {
+  margin: 0;
+  padding-top: 7px;
+}
+.navRight {
+  float: right;
+}
+.navLeft {
+  float: left;
+}
+.mainPageContainer {
+  display: grid;
+  grid-template-columns: auto auto;
+  border: 1px solid;
+  height: calc(100vh - 53px);
+}
+
+.guests {
+  min-width: 240px;
+  border-right: 1px solid;
+  margin: 0;
+  overflow: scroll;
+  padding-left: 0;
+}
+.guests > li {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid;
+}
+.guests > li:last-child {
+  border-bottom: 0;
+}
+
+.chatBox {
+  width: -webkit-fill-available;
+  border-left: 1px solid;
+}
+.chatBox > ul {
+  margin: 0;
+  padding: 0;
+  height: calc(100% - 50px);
+  list-style: none;
+  overflow-y: scroll;
+}
+.chatBox > ul > li {
+  background-color: lightcyan;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: fit-content;
+  max-width: calc(100% - 60px);
+  padding: 20px;
+  text-align: left;
+  border-radius: 25px;
+}
+.messagingForm {
+  border-top: 1px solid;
+}
+.messagingForm > input[type="text"] {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: calc(100% - 65px);
+  border: 0;
+}
+.sentMessage {
+  margin-right: 0;
+  margin-left: auto;
+}
+
+.notificationPanel {
+  display: none;
+  max-width: 100px;
+}

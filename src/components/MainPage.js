@@ -4,7 +4,7 @@ class MainPage extends React.Component {
   render() {
     return (
       <div>
-        <p>Welcome {this.props.login} <span>Unread Messages</span></p>
+        <div className="navBar"><h2><span className="navLeft">The GuestBook</span>Welcome {this.props.login} <span className="navRight">Unread Messages</span></h2></div>
         <div className="mainPageContainer">
             <ol className="guests">
                 <li>Mohamed</li>
@@ -24,7 +24,9 @@ class MainPage extends React.Component {
                     <li>uh,yea, so?</li>
                     <li className="sentMessage">And whispered "I know your secret... Optimus prime..."</li>
                 </ul>
-                <input type="text" />
+                <div class="messagingForm">
+                    <input placeholder="Write a message" type="text" /> <input type="button" value = "Send" />
+                </div>
             </div>
             <ul className="notificationPanel">
                 <li>You have 1 unread Message from Abanob</li>
