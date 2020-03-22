@@ -21,6 +21,7 @@ class AuthenticationPage extends React.Component {
   render() {
     return (
       <div>
+        <h3>Welcome to the guestbook</h3>
         {
           this.state.userAlreadyRegistered ? 
           (
