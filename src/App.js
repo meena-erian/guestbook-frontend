@@ -1,7 +1,7 @@
 import React from 'react';
-import logo from './logo.svg';
+//import logo from './logo.svg';
 import './App.css';
-import LoginPage from './components/LoginPage.js';
+import AuthenticationPage from './components/AuthenticationPage.js';
 import MainPage from './components/MainPage.js';
 
 
@@ -27,7 +27,7 @@ class App extends React.Component {
     if (login) {
       page = <MainPage login = {login}/>;
     } else {
-      page = <LoginPage />;
+      page = <AuthenticationPage />;
     }
     return (
       <div className="App">

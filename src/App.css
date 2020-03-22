@@ -36,7 +36,7 @@
     transform: rotate(360deg);
   }
 }
-.LoginForm > input {
+.AuthenticationForm > input {
   display: block;
   margin: 40px;
   width: -moz-available;
@@ -48,10 +48,9 @@
   border: 0px;
 }
 
-.LoginForm {
+.AuthenticationForm {
   min-width: 350px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 7px;
-  margin-bottom: 15vh;
   background-color: dimgray;
 }
