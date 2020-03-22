@@ -17,6 +17,9 @@ class MainPage extends React.Component {
                 <li>Basant</li>
             </ol>
             <div className="chatBox">
+                <div className="chatStatus">
+                    <h3>Peter</h3>
+                </div>
                 <ul>
                     <li className="sentMessage">Bro, you where so drunk last night!</li>
                     <li>The hell? What did I do?</li>
@@ -24,7 +27,7 @@ class MainPage extends React.Component {
                     <li>uh,yea, so?</li>
                     <li className="sentMessage">And whispered "I know your secret... Optimus prime..."</li>
                 </ul>
-                <div class="messagingForm">
+                <div className="messagingForm">
                     <input placeholder="Write a message" type="text" /> <input type="button" value = "Send" />
                 </div>
             </div>

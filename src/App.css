@@ -1,3 +1,14 @@
+:root {
+  --code1: #565264;
+  --code2: #706677;
+  --code3: #A69F98;
+  --code4: #D6CFCB;
+  --code5: #5E503F;
+}
+body{
+  color:white;
+  background-color: var(--code5);
+}
 .App {
   text-align: center;
 }
@@ -14,19 +25,19 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  /*background-color: var(--code5);*/
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  /*color: white;*/
 }
-
+/*
 .App-link {
   color: #61dafb;
-}
+}*/
 
 @keyframes App-logo-spin {
   from {
@@ -52,7 +63,7 @@
   min-width: 350px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 7px;
-  background-color: dimgray;
+  background-color:var(--code3);
 }
 
 .navBar {
@@ -60,6 +71,7 @@
   height: 50px;
   margin-top: 0;
   margin-bottom: 0;
+  background-color:var(--code2)
 }
 .navBar h2 {
   margin: 0;
@@ -80,7 +92,6 @@
 
 .guests {
   min-width: 240px;
-  border-right: 1px solid;
   margin: 0;
   overflow: scroll;
   padding-left: 0;
@@ -101,12 +112,17 @@
 .chatBox > ul {
   margin: 0;
   padding: 0;
-  height: calc(100% - 50px);
+  height: calc(100% - 75px);
   list-style: none;
   overflow-y: scroll;
+  background-color:var(--code1)
+}
+*::-webkit-scrollbar {
+  display: none;
 }
 .chatBox > ul > li {
-  background-color: lightcyan;
+  /*background-color: lightcyan;*/
+  background-color:var(--code3);
   margin-top: 20px;
   margin-bottom: 20px;
   width: fit-content;
@@ -123,6 +139,13 @@
   padding-bottom: 10px;
   width: calc(100% - 65px);
   border: 0;
+}
+.chatStatus {
+  padding: 5px;
+  border-bottom: 1px solid;
+}
+.chatStatus > h3 {
+  margin: 0;
 }
 .sentMessage {
   margin-right: 0;
