@@ -32,7 +32,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <header className="App-header">
-          <h4>Welcome to the guestbook</h4>
+          <h3>Welcome to the guestbook</h3>
           {page}
         </header>
       </div>

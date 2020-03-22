@@ -36,3 +36,22 @@
     transform: rotate(360deg);
   }
 }
+.LoginForm > input {
+  display: block;
+  margin: 40px;
+  width: -moz-available;
+  width: -webkit-fill-available;
+  width: fill-available;
+  padding: 7px;
+  font-weight: 600;
+  border-radius: 5px;
+  border: 0px;
+}
+
+.LoginForm {
+  min-width: 350px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 7px;
+  margin-bottom: 15vh;
+  background-color: dimgray;
+}

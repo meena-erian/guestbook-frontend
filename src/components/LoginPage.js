@@ -8,7 +8,7 @@ class LoginPage extends React.Component {
           <h4>Login to continue</h4>
           <input type="text" placeholder="Username" formNoValidate />
           <input type="password" placeholder="Password" formNoValidate />
-          <button>Login</button>
+          <input type="button" value="Login"/>
         </div>
       </div>
     );
