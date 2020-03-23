@@ -36,6 +36,7 @@ class SignupPage extends React.Component {
       if(e.target.status == 200){
         var apiResponse = JSON.parse(e.target.response);
         document.cookie = "guestname=" + this.state.tempUsername + "; sessionid=" + apiResponse.token + ";";
+        document.location.reload();
       }
       else if(e.target.status == 451){
         alert("Username is not available");
