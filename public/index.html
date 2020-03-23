@@ -35,6 +35,12 @@
           body: The request body (needed for POST and PATCH request)
 
           Return value: No return value.
+
+          Note: The parameter passed to the callback function is a ProgressEvent object
+            regardless of what happened or what the server response was or even if there
+            was no internet connection. and it will alway containa target object of type
+            xmlhttprequest that was used to trigger the event.
+
       */
       function api(method, uri, callback, body = null){
         var xhttp = new XMLHttpRequest();
