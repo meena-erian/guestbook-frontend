@@ -168,3 +168,7 @@ body{
 .clickable:hover{
   color: var(--code3);
 }
+.loading{
+  background-image: url('/loading.gif');
+  background-size: cover;
+}
