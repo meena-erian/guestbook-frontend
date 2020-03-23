@@ -160,3 +160,11 @@ body{
 .badInput{
   box-shadow: 0 0 19px red;
 }
+
+.clickable{
+  color: var(--code4);
+  cursor: pointer;
+}
+.clickable:hover{
+  color: var(--code3);
+}

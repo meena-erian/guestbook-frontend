@@ -4,9 +4,8 @@ class LoginPage extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            validUsername : true,
-            validPassword : true,
-            passwordsMatch : true
+            validUsername : undefined,
+            validPassword : undefined
         }
         this.handlePasswordInput = this.handlePasswordInput.bind(this);
         this.handleUsernameInput = this.handleUsernameInput.bind(this);
@@ -24,9 +23,9 @@ class LoginPage extends React.Component {
       <div>
         <div className="AuthenticationForm">
           <h4>Login to continue</h4>
-          <input id="loginName" className={this.state.validUsername? "" : "badInput"} onChange = {this.handleUsernameInput} type="text" placeholder="Username" formNoValidate />
-          <input id="loginPassword" className={this.state.validPassword? "" : "badInput"} onChange = {this.handlePasswordInput} type="password" placeholder="Password" formNoValidate />
-          <input type="button" value="Login" />
+          <input id="loginName" className={this.state.validUsername !== false? "" : "badInput"} onChange = {this.handleUsernameInput} type="text" placeholder="Username" formNoValidate />
+          <input id="loginPassword" className={this.state.validPassword !== false? "" : "badInput"} onChange = {this.handlePasswordInput} type="password" placeholder="Password" formNoValidate />
+          <input type="button" value="Login" disabled={this.state.validUsername && this.state.validPassword? false : true}/>
         </div>
       </div>
     );

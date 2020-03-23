@@ -28,9 +28,9 @@ class AuthenticationPage extends React.Component {
               <LoginPage />
               <p>
                 Don't have an account?{" "}
-                <a href="#" onClick={this.userWantsToRegister}>
+                <span className="clickable" onClick={this.userWantsToRegister}>
                   Rigister
-                </a>{" "}
+                </span>{" "}
                 instead!
               </p>
             </div>
@@ -39,9 +39,9 @@ class AuthenticationPage extends React.Component {
               <SignupPage />
               <p>
                 Have an account already?{" "}
-                <a href="#" onClick={this.userWantsToLogin}>
+                <span className="clickable" onClick={this.userWantsToLogin}>
                   Login
-                </a>{" "}
+                </span>{" "}
                 instead!
               </p>
             </div>
