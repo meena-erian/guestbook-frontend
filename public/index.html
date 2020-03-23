@@ -2,6 +2,57 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <script>
+      /*
+
+      This script will represent an interactive interface for 
+        the guestbook's backend API.
+
+      I choose to place it in the template html file because it has 
+        to be globally accessible from anywhere in the code.
+
+      */
+      
+      //The API will be on the same domain but different port
+      let apiAddress = 'http://' + document.domain + ":8080";
+
+      //Lets set a temporary handler for when there's no internet
+      let connectionFailedHandler = function(e){
+        console.log(e);
+        alert("Unable to connect to the server! Please check your internet connaction and try again");
+      }
+
+      /*
+          Quick documentaion
+          ------------------
+          function api(string method, string uri, function callback, object body)
+
+          method: request method (GET, POST, PUT, PATCH, DELETE, HEAD, etc..)
+          uri: The API endpoint. ie. what's after the domain name eg. /users/login
+          callback: A function that will be called once the server responce arrives
+            The callback function will be called even if there's no internet connection.
+            Hoever, different event objects will be passed to it to indicate what happened.
+          body: The request body (needed for POST and PATCH request)
+
+          Return value: No return value.
+      */
+      function api(method, uri, callback, body = null){
+        var xhttp = new XMLHttpRequest();
+        xhttp.open(method, apiAddress + uri);
+        xhttp.onerror = function (e){
+          connectionFailedHandler(e);
+          callback(e);
+        }
+        xhttp.onload = callback;
+        xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        if(body){
+          xhttp.send(JSON.stringify(body));
+        }
+        else{
+          xhttp.send();
+        }
+      }
+    </script>
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
@@ -24,7 +75,7 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>React App</title>
+    <title>Guestbook</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
