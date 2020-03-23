@@ -33,7 +33,8 @@ class LoginPage extends React.Component {
     loginResponseHandler(e){
       if(e.target.status == 200){
         var apiResponse = JSON.parse(e.target.response);
-        document.cookie = "guestname=" + this.state.tempUsername + "; sessionid=" + apiResponse.token + ";";
+        document.cookie = "guestname=" + this.state.tempUsername;
+        document.cookie =  "sessionid=" + apiResponse.token;
         document.location.reload();
       }
       else if(e.target.status == 401){
