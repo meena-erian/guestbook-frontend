@@ -26,20 +26,20 @@ class SignupPage extends React.Component {
     signupRequestSender(){
       var btn = document.querySelector('#signup-button');
       btn.classList.add("loading");
-      this.state.tempUsername = document.querySelector("#loginName").value
+      this.state.tempUsername = document.querySelector("#loginName").value // eslint-disable-line
       api("POST", "/user/signup", this.signupResponseHandler, { // eslint-disable-line
         'username' : this.state.tempUsername,
         'password' : document.querySelector("#loginPassword").value
       });
     }
     signupResponseHandler(e){
-      if(e.target.status == 200){
+      if(e.target.status === 200){
         var apiResponse = JSON.parse(e.target.response);
         document.cookie = "guestname=" + this.state.tempUsername;
         document.cookie =  "sessionid=" + apiResponse.token;
         document.location.reload();
       }
-      else if(e.target.status == 451){
+      else if(e.target.status === 451){
         alert("Username is not available");
       }
       var btn = document.querySelector('#signup-button');

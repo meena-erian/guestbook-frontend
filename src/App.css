@@ -50,9 +50,8 @@ body{
 .AuthenticationForm > input {
   display: block;
   margin: 40px;
-  width: -moz-available;
   width: -webkit-fill-available;
-  width: fill-available;
+  width: -moz-available;
   padding: 7px;
   font-weight: 600;
   border-radius: 5px;

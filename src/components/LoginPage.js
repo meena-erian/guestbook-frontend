@@ -24,20 +24,20 @@ class LoginPage extends React.Component {
     loginRequestSender(){
       var btn = document.querySelector('#login-button');
       btn.classList.add("loading");
-      this.state.tempUsername = document.querySelector("#loginName").value
+      this.state.tempUsername = document.querySelector("#loginName").value // eslint-disable-line
       api("POST", "/user/login", this.loginResponseHandler, { // eslint-disable-line
         'username' : this.state.tempUsername,
         'password' : document.querySelector("#loginPassword").value
       });
     }
     loginResponseHandler(e){
-      if(e.target.status == 200){
+      if(e.target.status === 200){
         var apiResponse = JSON.parse(e.target.response);
         document.cookie = "guestname=" + this.state.tempUsername;
         document.cookie =  "sessionid=" + apiResponse.token;
         document.location.reload();
       }
-      else if(e.target.status == 401){
+      else if(e.target.status === 401){
         alert("Incorrect username or password");
       }
       var btn = document.querySelector('#login-button');
