@@ -25,6 +25,8 @@ class MainPage extends React.Component {
     this.toggleNotificationsPannel = this.toggleNotificationsPannel.bind(this);
     this.requestMessageDelete = this.requestMessageDelete.bind(this);
     this.handleMessageDeletion = this.handleMessageDeletion.bind(this);
+    this.requestEditingMessage = this.requestEditingMessage.bind(this);
+    this.handleEditingMessage = this.handleEditingMessage.bind(this);
     //this.requestUpdates();
   }
   toggleNotificationsPannel(){
@@ -175,10 +177,35 @@ class MainPage extends React.Component {
       default:
         alert("Failed to delete message!");
     }
-    console.log("e: Equals:");
-    console.log(e);
-    console.log("id: Equals");
-    console.log(id);
+  }
+  handleEditingMessage(e, id, newContent){
+    var msg = document.getElementById(id);
+    msg.classList.remove("loading");
+    switch(e.target.status){
+      case 204:
+        for(var i=0; i < this.state.chat.length; i++){
+          if(this.state.chat[i]._id === id){
+            this.state.chat[i].content = newContent;
+          }
+        }
+        this.setState(this.state);
+      break;
+      default:
+        alert("Failed to edit message!");
+    }
+  }
+  requestEditingMessage(id, msg){
+    let newMsg = prompt("Edit message", msg);
+    if(!newMsg || !newMsg.length) return;
+    var msg = document.getElementById(id);
+    msg.classList.add("loading");
+    let handler = this.handleEditingMessage;
+    api("PATCH","/message/" + id, // eslint-disable-line
+      function (e){
+        handler(e, id, newMsg);
+      },
+      {content: newMsg}
+    );
   }
   requestMessageDelete(id){
     if(!window.confirm("Are you sure you want to delete this message?")) return;
@@ -248,7 +275,7 @@ class MainPage extends React.Component {
                     {msg.content}
                     {msg.sender == this.state.selectedContact._id? "":
                     (<p className="msgfooter">
-                      <span className="clickable" > 🖊 </span>
+                      <span className="clickable" onClick={() => {this.requestEditingMessage(msg._id, msg.content)}}> 🖊 </span>
                       <span className="clickable" onClick={() => {this.requestMessageDelete(msg._id)}}> 🗑 </span>
                     </p>)}
                   </li>
