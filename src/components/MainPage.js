@@ -27,6 +27,7 @@ class MainPage extends React.Component {
     this.handleMessageDeletion = this.handleMessageDeletion.bind(this);
     this.requestEditingMessage = this.requestEditingMessage.bind(this);
     this.handleEditingMessage = this.handleEditingMessage.bind(this);
+    this.closeChat = this.closeChat.bind(this);
     //this.requestUpdates();
   }
   toggleNotificationsPannel(){
@@ -130,8 +131,11 @@ class MainPage extends React.Component {
     this.state.chat = false;
     api("GET", "/messages/" + user._id, this.renderMessagesApiResponse); // eslint-disable-line
     this.setState({ selectedContact: user });
-    console.log("Selecting user:");
-    console.log(user);
+    if(this.state.deviceWidth<2){
+      this.state.notificationsPannelOpen = false;
+      this.state.guestsListOpen = false;
+      this.setState(this.state);
+    }
   }
   handleMessageSendingApiResponse(e) {
     var msgInput = document.querySelector("#messageInputBox");
@@ -217,6 +221,12 @@ class MainPage extends React.Component {
       handler(e, id);
     });
   }
+  closeChat(){
+    this.state.selectedContact = {};
+    this.state.chat = false;
+    this.state.guestsListOpen = true;
+    this.setState(this.state);
+  }
   render() {
     return (
       <div>
@@ -230,6 +240,7 @@ class MainPage extends React.Component {
         </div>
         <div className="mainPageContainer">
           <ol className="guests" hidden={!this.state.guestsListOpen}>
+            <li><h2>Guests</h2></li>
             {this.state.guests.map(user => (
               <li
                 data-time={user.registered}
@@ -242,12 +253,15 @@ class MainPage extends React.Component {
               </li>
             ))}
           </ol>
-          <div className="chatBox" hidden={this.state.chat === undefined}>
+          <div className="chatBox" hidden={this.state.chat === undefined || this.state.chat === false}>
             <div className="chatStatus">
               <h3>
                 {this.state.selectedContact.username
                   ? this.state.selectedContact.username
                   : "Choose a guest to message"}
+                  {this.state.selectedContact.username ? 
+                  (<span className="navRight clickable" onClick={this.closeChat}>X</span>):
+                  ""}
               </h3>
             </div>
             <ul>
@@ -282,7 +296,7 @@ class MainPage extends React.Component {
                 ))
               ) : (
                 <div>
-                  <li>Nothing here</li>
+                  <p>Nothing here<br /> Try sending a message</p>
                 </div>
               )}
             </ul>

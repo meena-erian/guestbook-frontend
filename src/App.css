@@ -82,6 +82,9 @@ body{
 }
 .navLeft {
   float: left;
+  margin-left: 2vw;
+  padding-top: 6px;
+  font-size: 16px;
 }
 .mainPageContainer {
   /*display: grid;
@@ -92,22 +95,28 @@ body{
 }
 
 .guests {
-  min-width: 240px;
-  margin: 0;
+  width: -webkit-fill-available;
+  width: -moz-available;  margin: 0;
   overflow: scroll;
   padding-left: 0;
 }
+.guests h2{
+  text-align: center;
+  border-bottom: 2px solid;
+}
+
 .guests > li {
-  padding: 8px;
+  padding: 25px;
   text-align: left;
   border-bottom: 1px solid;
-}
+}/*
 .guests > li:last-child {
   border-bottom: 0;
-}
+}*/
 
 .chatBox {
   width: -webkit-fill-available;
+  width: -moz-available;
   border-left: 1px solid;
 }
 .chatBox > ul {
@@ -155,11 +164,17 @@ body{
 }
 
 .notificationPanel {
-  max-width: 350px;
+  /*max-width: 350px;*/
   margin: 0;
   overflow: scroll;
   padding-left: 0;
   border-left:1px solid;
+}
+
+.notificationPanel>li{
+  text-align: left;
+  border: 1px solid;
+  padding: 13px;
 }
 
 .badInput{
