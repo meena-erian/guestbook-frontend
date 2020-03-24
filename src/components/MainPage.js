@@ -136,7 +136,7 @@ class MainPage extends React.Component {
     this.state.selectedContact = user;
     this.state.chat = false;
     api("GET", "/messages/" + user._id, this.renderMessagesApiResponse); // eslint-disable-line
-    this.setState({ selectedContact: user });
+    this.setState(this.state);
     if (this.state.deviceWidth < 2) {
       this.state.notificationsPannelOpen = false;
       this.state.guestsListOpen = false;
