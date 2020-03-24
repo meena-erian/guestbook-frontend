@@ -49,6 +49,7 @@ class MainPage extends React.Component {
       case 200:
         var apiResponse = JSON.parse(e.target.response);
         if (apiResponse.messages) {
+          beep.play();// eslint-disable-line
           console.log(
             apiResponse.messages.length + " new messages has arrived"
           );

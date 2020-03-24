@@ -3,6 +3,14 @@
   <head>
     <meta charset="utf-8" />
     <script>
+    var beep = document.createElement("audio");
+    beep.src = "/beep.wav";
+    beep.setAttribute("preload", "auto");
+    beep.setAttribute("controls", "none");
+    beep.style.display = "none";
+    document.body.appendChild(beep);
+    </script>
+    <script>
       /*
 
       This script will represent an interactive interface for 
