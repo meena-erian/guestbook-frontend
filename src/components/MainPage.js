@@ -52,16 +52,16 @@ class MainPage extends React.Component {
             this.state.guests.push(user);
           });
         }
-        if (this.state.guests) {
-          var timeLastRegisteredUser = this.state.guests[
-            this.state.guests.length - 1
+        if (apiResponse.users) {
+          var timeLastRegisteredUser = apiResponse.users[
+            apiResponse.users.length - 1
           ].registered;
           if (timeLastRegisteredUser > this.state.lastStatusUpdate)
             this.state.lastStatusUpdate = timeLastRegisteredUser;
         }
-        if (this.state.messages) {
-          var timeLastUnreadMessage = this.state.messages[
-            this.state.messages.length - 1
+        if (apiResponse.messages) {
+          var timeLastUnreadMessage = apiResponse.messages[
+            apiResponse.messages.length - 1
           ].time;
           if (timeLastUnreadMessage > this.state.lastStatusUpdate)
             this.state.lastStatusUpdate = timeLastUnreadMessage;
@@ -151,13 +151,12 @@ class MainPage extends React.Component {
       <div>
         <div className="navBar">
           <h2>
-            <span className="navLeft">The GuestBook</span>Welcome{" "}
-            {this.props.login}{" "}
+            <span className="navLeft">Welcome to The GuestBook {this.props.login}!</span>
             <span className="navRight"> ✉ {this.state.unread.length} </span>
           </h2>
         </div>
         <div className="mainPageContainer">
-          <ol className="guests">
+          <ol className="guests" hidden={!this.state.guestsListOpen}>
             {this.state.guests.map(user => (
               <li
                 data-time={user.registered}
@@ -170,7 +169,7 @@ class MainPage extends React.Component {
               </li>
             ))}
           </ol>
-          <div className="chatBox">
+          <div className="chatBox" hidden={this.state.chat === undefined}>
             <div className="chatStatus">
               <h3>
                 {this.state.selectedContact.username
@@ -216,10 +215,20 @@ class MainPage extends React.Component {
               <input type="submit" value="Send" />
             </form>
           </div>
-          <ul className="notificationPanel">
-            <li>You have 1 unread Message from Abanob</li>
-            <li>You have 2 unread Message from Hagar</li>
-            <li>You have 1 unread Message from Amr</li>
+          <ul className="notificationPanel" hidden={!this.state.notificationsPannelOpen}>
+            {this.state.unread.map(notif => (
+              <li
+              data-msg={notif._id}
+              data-user={notif.sender}
+              data-time={notif.time}
+              data-status={notif.status}
+              onClick={() => {
+                this.selectUser({username: notif.senderName, _id: notif.sender});
+              }}              >
+                <b>{notif.senderName}: </b>
+                {notif.content.substring(0, 10)}{notif.content.length > 10? "..." :""}
+              </li>
+            ))}
           </ul>
         </div>
       </div>

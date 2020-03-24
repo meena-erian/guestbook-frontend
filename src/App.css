@@ -84,8 +84,9 @@ body{
   float: left;
 }
 .mainPageContainer {
-  display: grid;
-  grid-template-columns: auto auto;
+  /*display: grid;
+  grid-template-columns: auto auto;*/
+  display:flex;
   border: 1px solid;
   height: calc(100vh - 53px);
 }
@@ -153,8 +154,11 @@ body{
 }
 
 .notificationPanel {
-  display: none;
-  max-width: 100px;
+  max-width: 350px;
+  margin: 0;
+  overflow: scroll;
+  padding-left: 0;
+  border-left:1px solid;
 }
 
 .badInput{
