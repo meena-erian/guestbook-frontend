@@ -158,6 +158,9 @@ class MainPage extends React.Component {
     );
     msgInput.classList.add("loading");
   }
+  requestMessageDelete(id){
+    console.log(id);
+  }
   render() {
     return (
       <div>
@@ -166,7 +169,7 @@ class MainPage extends React.Component {
             <span className="navLeft">
               Welcome to The GuestBook {this.props.login}!
             </span>
-            <span onClick={this.toggleNotificationsPannel} className="navRight"> ✉ {this.state.unread.length} </span>
+            <span onClick={this.toggleNotificationsPannel} className="navRight clickable"> ✉ {this.state.unread.length} </span>
           </h2>
         </div>
         <div className="mainPageContainer">
@@ -214,6 +217,11 @@ class MainPage extends React.Component {
                     }
                   >
                     {msg.content}
+                    {msg.sender == this.state.selectedContact._id? "":
+                    (<p className="msgfooter">
+                      <span className="clickable" > 🖊 </span>
+                      <span className="clickable" onClick={() => {this.requestMessageDelete(msg._id)}}> 🗑 </span>
+                    </p>)}
                   </li>
                 ))
               ) : (
