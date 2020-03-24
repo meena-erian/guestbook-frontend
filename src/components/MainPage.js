@@ -89,7 +89,7 @@ class MainPage extends React.Component {
         <div className="navBar">
           <h2>
             <span className="navLeft">The GuestBook</span>Welcome{" "}
-            {this.props.login} <span className="navRight">Unread Messages</span>
+    {this.props.login} <span className="navRight"> ✉ {this.state.unread.length} </span>
           </h2>
         </div>
         <div className="mainPageContainer">

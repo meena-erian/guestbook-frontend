@@ -78,6 +78,7 @@ body{
 }
 .navRight {
   float: right;
+  margin-right: 10px;
 }
 .navLeft {
   float: left;
