@@ -8,22 +8,23 @@ class MainPage extends React.Component {
     var notificationsPannelOpen = deviceWidth > 1 ? true : false;
     var selectedContact = {}; // This will change when the user opens chat with anyone
     this.state = {
-      lastStatusUpdate : 0,
+      lastStatusUpdate: 0,
       deviceWidth: deviceWidth,
       guestsListOpen: guestsListOpen,
       notificationsPannelOpen: notificationsPannelOpen,
       selectedContact: selectedContact,
       guests: [], // This will up an up to date list of registered users
-      chat: [], // This will be an array of messages with the 'selectedContact'
+      chat: undefined, // This will be an array of messages with the 'selectedContact'
       unread: [] // This will represent the content of the notifications pannel
     };
     this.requestUpdates = this.requestUpdates.bind(this);
     this.handleUpdates = this.handleUpdates.bind(this);
     this.selectUser = this.selectUser.bind(this);
+    this.renderMessagesApiResponse = this.renderMessagesApiResponse.bind(this);
+    this.handleMessageSendingApiResponse = this.handleMessageSendingApiResponse.bind(this);
     //this.requestUpdates();
-    
   }
-  componentDidMount(){
+  componentDidMount() {
     this.requestUpdates();
     this.updateInterval = setInterval(this.requestUpdates, 5000);
   }
@@ -51,15 +52,19 @@ class MainPage extends React.Component {
             this.state.guests.push(user);
           });
         }
-        if(this.state.guests){
-          var timeLastRegisteredUser = this.state.guests[this.state.guests.length-1].registered;
-          if(timeLastRegisteredUser > this.state.lastStatusUpdate)
-          this.state.lastStatusUpdate = timeLastRegisteredUser;
+        if (this.state.guests) {
+          var timeLastRegisteredUser = this.state.guests[
+            this.state.guests.length - 1
+          ].registered;
+          if (timeLastRegisteredUser > this.state.lastStatusUpdate)
+            this.state.lastStatusUpdate = timeLastRegisteredUser;
         }
-        if(this.state.messages){
-          var timeLastUnreadMessage = this.state.messages[this.state.messages.length-1].time;
-          if(timeLastUnreadMessage > this.state.lastStatusUpdate)
-          this.state.lastStatusUpdate = timeLastUnreadMessage;
+        if (this.state.messages) {
+          var timeLastUnreadMessage = this.state.messages[
+            this.state.messages.length - 1
+          ].time;
+          if (timeLastUnreadMessage > this.state.lastStatusUpdate)
+            this.state.lastStatusUpdate = timeLastUnreadMessage;
         }
         this.setState(this.state);
         break;
@@ -78,10 +83,68 @@ class MainPage extends React.Component {
         console.log(e);
     }
   }
+  renderMessagesApiResponse(e) {
+    console.log("Server response arrived");
+    switch (e.target.status) {
+      case 200:
+        console.log("Messages fetched successfully");
+        var apiResponse = JSON.parse(e.target.response);
+        console.log(apiResponse);
+        if (typeof this.state.chat !== "array") this.state.chat = [];
+        apiResponse.forEach(msg => {
+          this.state.chat.push(msg);
+        });
+        this.setState(this.state);
+        break;
+      case 204:
+        console.log("No Messages");
+        if (this.state.chat === false) {
+          this.state.chat = [];
+        }
+        this.setState(this.state);
+        break;
+      case 404:
+      //break;
+      case 401:
+      //break;
+      default:
+        console.log("Something went wrong");
+    }
+  }
   selectUser(user) {
-    this.setState({selectedContact : user});
+    this.state.selectedContact = user;
+    this.state.chat = false;
+    api("GET", "/messages/" + user._id, this.renderMessagesApiResponse); // eslint-disable-line
+    this.setState({ selectedContact: user });
     console.log("Selecting user:");
     console.log(user);
+  }
+  handleMessageSendingApiResponse(e){
+    var msgInput = document.querySelector("#messageInputBox");
+    msgInput.classList.remove("loading");
+    switch(e.target.status){
+      case 200:
+        console.log("Message delivered successfully!");
+        var apiResponse = JSON.parse(e.target.response);
+        console.log(apiResponse);
+        this.state.chat.push(apiResponse);
+        this.setState(this.state);
+        msgInput.value = "";
+      break;
+      case 404:
+      //break;
+      case 401:
+      //break;
+      default:  
+        console.log("Failed to send message");
+    }
+  }
+  sendMessage(e){
+    e.preventDefault();
+    var msgInput = document.querySelector("#messageInputBox");
+    api("POST", "/message/" + this.state.selectedContact._id,// eslint-disable-line
+    this.handleMessageSendingApiResponse, {"content" : msgInput.value}); 
+    msgInput.classList.add("loading");
   }
   render() {
     return (
@@ -89,7 +152,8 @@ class MainPage extends React.Component {
         <div className="navBar">
           <h2>
             <span className="navLeft">The GuestBook</span>Welcome{" "}
-    {this.props.login} <span className="navRight"> ✉ {this.state.unread.length} </span>
+            {this.props.login}{" "}
+            <span className="navRight"> ✉ {this.state.unread.length} </span>
           </h2>
         </div>
         <div className="mainPageContainer">
@@ -98,7 +162,9 @@ class MainPage extends React.Component {
               <li
                 data-time={user.registered}
                 data-id={user._id}
-                onClick={() => {this.selectUser(user);}}
+                onClick={() => {
+                  this.selectUser(user);
+                }}
               >
                 {user.username}
               </li>
@@ -107,26 +173,48 @@ class MainPage extends React.Component {
           <div className="chatBox">
             <div className="chatStatus">
               <h3>
-                {this.state.selectedContact.username ?  
-                  this.state.selectedContact.username :
-                  "Choose a guest to message"}
+                {this.state.selectedContact.username
+                  ? this.state.selectedContact.username
+                  : "Choose a guest to message"}
               </h3>
             </div>
             <ul>
-              <li className="sentMessage">
-                Bro, you where so drunk last night!
-              </li>
-              <li>The hell? What did I do?</li>
-              <li className="sentMessage">You went to a semi truck...</li>
-              <li>uh,yea, so?</li>
-              <li className="sentMessage">
-                And whispered "I know your secret... Optimus prime..."
-              </li>
+              {this.state.chat === undefined ? (
+                <div>
+                  <li>No contact selected!</li>
+                  <li>Welcome to the guestbook app</li>
+                </div>
+              ) : this.state.chat === false ? (
+                <div>
+                  <li>Hang on! the chat is loading...</li>
+                </div>
+              ) : (
+                this.state.chat.length ?
+                this.state.chat.map(msg => (
+                  <li
+                    id={msg._id}
+                    data-time={msg.time}
+                    data-status={msg.status}
+                    className={
+                      msg.sender == this.state.selectedContact._id
+                        ? ""
+                        : "sentMessage"
+                    }
+                  >
+                    {msg.content}
+                  </li>
+                )) :
+                (
+                  <div>
+                    <li>Nothing here</li>
+                  </div>
+                )
+              )}
             </ul>
-            <div className="messagingForm">
-              <input placeholder="Write a message" type="text" />{" "}
-              <input type="button" value="Send" />
-            </div>
+            <form onSubmit={(e) => (this.sendMessage(e)) } className="messagingForm">
+              <input id="messageInputBox" placeholder="Write a message" type="text" />
+              <input type="submit" value="Send" />
+            </form>
           </div>
           <ul className="notificationPanel">
             <li>You have 1 unread Message from Abanob</li>
