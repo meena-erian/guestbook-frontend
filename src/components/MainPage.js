@@ -21,7 +21,9 @@ class MainPage extends React.Component {
     this.handleUpdates = this.handleUpdates.bind(this);
     this.selectUser = this.selectUser.bind(this);
     this.renderMessagesApiResponse = this.renderMessagesApiResponse.bind(this);
-    this.handleMessageSendingApiResponse = this.handleMessageSendingApiResponse.bind(this);
+    this.handleMessageSendingApiResponse = this.handleMessageSendingApiResponse.bind(
+      this
+    );
     //this.requestUpdates();
   }
   componentDidMount() {
@@ -53,16 +55,14 @@ class MainPage extends React.Component {
           });
         }
         if (apiResponse.users) {
-          var timeLastRegisteredUser = apiResponse.users[
-            apiResponse.users.length - 1
-          ].registered;
+          var timeLastRegisteredUser =
+            apiResponse.users[apiResponse.users.length - 1].registered;
           if (timeLastRegisteredUser > this.state.lastStatusUpdate)
             this.state.lastStatusUpdate = timeLastRegisteredUser;
         }
         if (apiResponse.messages) {
-          var timeLastUnreadMessage = apiResponse.messages[
-            apiResponse.messages.length - 1
-          ].time;
+          var timeLastUnreadMessage =
+            apiResponse.messages[apiResponse.messages.length - 1].time;
           if (timeLastUnreadMessage > this.state.lastStatusUpdate)
             this.state.lastStatusUpdate = timeLastUnreadMessage;
         }
@@ -94,6 +94,10 @@ class MainPage extends React.Component {
         apiResponse.forEach(msg => {
           this.state.chat.push(msg);
         });
+        let currentUser = this.state.selectedContact._id;
+        this.state.unread = this.state.unread.filter(function(msg) {
+          return msg.sender !== currentUser;
+        });
         this.setState(this.state);
         break;
       case 204:
@@ -119,10 +123,10 @@ class MainPage extends React.Component {
     console.log("Selecting user:");
     console.log(user);
   }
-  handleMessageSendingApiResponse(e){
+  handleMessageSendingApiResponse(e) {
     var msgInput = document.querySelector("#messageInputBox");
     msgInput.classList.remove("loading");
-    switch(e.target.status){
+    switch (e.target.status) {
       case 200:
         console.log("Message delivered successfully!");
         var apiResponse = JSON.parse(e.target.response);
@@ -130,20 +134,22 @@ class MainPage extends React.Component {
         this.state.chat.push(apiResponse);
         this.setState(this.state);
         msgInput.value = "";
-      break;
+        break;
       case 404:
       //break;
       case 401:
       //break;
-      default:  
+      default:
         console.log("Failed to send message");
     }
   }
-  sendMessage(e){
+  sendMessage(e) {
     e.preventDefault();
     var msgInput = document.querySelector("#messageInputBox");
-    api("POST", "/message/" + this.state.selectedContact._id,// eslint-disable-line
-    this.handleMessageSendingApiResponse, {"content" : msgInput.value}); 
+    api("POST","/message/" + this.state.selectedContact._id, // eslint-disable-line
+      this.handleMessageSendingApiResponse,
+      { content: msgInput.value }
+    );
     msgInput.classList.add("loading");
   }
   render() {
@@ -151,7 +157,9 @@ class MainPage extends React.Component {
       <div>
         <div className="navBar">
           <h2>
-            <span className="navLeft">Welcome to The GuestBook {this.props.login}!</span>
+            <span className="navLeft">
+              Welcome to The GuestBook {this.props.login}!
+            </span>
             <span className="navRight"> ✉ {this.state.unread.length} </span>
           </h2>
         </div>
@@ -187,8 +195,7 @@ class MainPage extends React.Component {
                 <div>
                   <li>Hang on! the chat is loading...</li>
                 </div>
-              ) : (
-                this.state.chat.length ?
+              ) : this.state.chat.length ? (
                 this.state.chat.map(msg => (
                   <li
                     id={msg._id}
@@ -202,31 +209,42 @@ class MainPage extends React.Component {
                   >
                     {msg.content}
                   </li>
-                )) :
-                (
-                  <div>
-                    <li>Nothing here</li>
-                  </div>
-                )
+                ))
+              ) : (
+                <div>
+                  <li>Nothing here</li>
+                </div>
               )}
             </ul>
-            <form onSubmit={(e) => (this.sendMessage(e)) } className="messagingForm">
-              <input id="messageInputBox" placeholder="Write a message" type="text" />
+            <form onSubmit={e => this.sendMessage(e)} className="messagingForm">
+              <input
+                id="messageInputBox"
+                placeholder="Write a message"
+                type="text"
+              />
               <input type="submit" value="Send" />
             </form>
           </div>
-          <ul className="notificationPanel" hidden={!this.state.notificationsPannelOpen}>
+          <ul
+            className="notificationPanel"
+            hidden={!this.state.notificationsPannelOpen}
+          >
             {this.state.unread.map(notif => (
               <li
-              data-msg={notif._id}
-              data-user={notif.sender}
-              data-time={notif.time}
-              data-status={notif.status}
-              onClick={() => {
-                this.selectUser({username: notif.senderName, _id: notif.sender});
-              }}              >
+                data-msg={notif._id}
+                data-user={notif.sender}
+                data-time={notif.time}
+                data-status={notif.status}
+                onClick={() => {
+                  this.selectUser({
+                    username: notif.senderName,
+                    _id: notif.sender
+                  });
+                }}
+              >
                 <b>{notif.senderName}: </b>
-                {notif.content.substring(0, 10)}{notif.content.length > 10? "..." :""}
+                {notif.content.substring(0, 10)}
+                {notif.content.length > 10 ? "..." : ""}
               </li>
             ))}
           </ul>
