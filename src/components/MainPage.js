@@ -1,6 +1,23 @@
 import React from 'react';
 
 class MainPage extends React.Component {
+  constructor(props){
+    super(props);
+    var deviceWidth = Math.floor(window.innerWidth / 300), // This will define how many components can the window be horizontally divided into
+    var guestsListOpen = true;
+    var notificationsPannelOpen = (deviceWidth > 1) ? true : false;
+    var selectedContact = ""; // This will change when the user opens chat with anyone
+    this.state = {
+      deviceWidth : deviceWidth,
+      guestsListOpen : guestsListOpen,
+      notificationsPannelOpen : notificationsPannelOpen,
+      selectedContact : selectedContact,
+      guests : {}, // This will up an up to date list of registered users
+      chat : {}, // This will be an array of messages with the 'selectedContact'
+      unread : {} // This will represent the content of the notifications pannel
+    }
+  }
+
   render() {
     return (
       <div>
