@@ -23,6 +23,8 @@ class MainPage extends React.Component {
     this.renderMessagesApiResponse = this.renderMessagesApiResponse.bind(this);
     this.handleMessageSendingApiResponse = this.handleMessageSendingApiResponse.bind(this);
     this.toggleNotificationsPannel = this.toggleNotificationsPannel.bind(this);
+    this.requestMessageDelete = this.requestMessageDelete.bind(this);
+    this.handleMessageDeletion = this.handleMessageDeletion.bind(this);
     //this.requestUpdates();
   }
   toggleNotificationsPannel(){
@@ -158,8 +160,35 @@ class MainPage extends React.Component {
     );
     msgInput.classList.add("loading");
   }
-  requestMessageDelete(id){
+  handleMessageDeletion(e, id){
+    var msg = document.getElementById(id);
+    msg.classList.remove("loading");
+    switch(e.target.status){
+      case 204:
+        this.state.chat = this.state.chat.filter(
+          msg => {
+            return msg._id !==id
+          }
+        );
+        this.setState(this.state);
+      break;
+      default:
+        alert("Failed to delete message!");
+    }
+    console.log("e: Equals:");
+    console.log(e);
+    console.log("id: Equals");
     console.log(id);
+  }
+  requestMessageDelete(id){
+    if(!window.confirm("Are you sure you want to delete this message?")) return;
+    var msg = document.getElementById(id);
+    msg.classList.add("loading");
+    let handler = this.handleMessageDeletion;
+    api("DELETE","/message/" + id, // eslint-disable-line
+    function (e){
+      handler(e, id);
+    });
   }
   render() {
     return (
