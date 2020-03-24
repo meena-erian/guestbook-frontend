@@ -21,7 +21,9 @@ class MainPage extends React.Component {
     this.handleUpdates = this.handleUpdates.bind(this);
     this.selectUser = this.selectUser.bind(this);
     this.renderMessagesApiResponse = this.renderMessagesApiResponse.bind(this);
-    this.handleMessageSendingApiResponse = this.handleMessageSendingApiResponse.bind(this);
+    this.handleMessageSendingApiResponse = this.handleMessageSendingApiResponse.bind(
+      this
+    );
     this.toggleNotificationsPannel = this.toggleNotificationsPannel.bind(this);
     this.requestMessageDelete = this.requestMessageDelete.bind(this);
     this.handleMessageDeletion = this.handleMessageDeletion.bind(this);
@@ -30,7 +32,7 @@ class MainPage extends React.Component {
     this.closeChat = this.closeChat.bind(this);
     //this.requestUpdates();
   }
-  toggleNotificationsPannel(){
+  toggleNotificationsPannel() {
     this.state.notificationsPannelOpen = !this.state.notificationsPannelOpen;
     this.setState(this.state);
   }
@@ -49,13 +51,16 @@ class MainPage extends React.Component {
       case 200:
         var apiResponse = JSON.parse(e.target.response);
         if (apiResponse.messages) {
-          beep.play();// eslint-disable-line
+          beep.play(); // eslint-disable-line
           console.log(
             apiResponse.messages.length + " new messages has arrived"
           );
           apiResponse.messages.forEach(msg => {
             this.state.unread.push(msg);
-            if(this.state.selectedContact && msg.sender === this.state.selectedContact._id){
+            if (
+              this.state.selectedContact &&
+              msg.sender === this.state.selectedContact._id
+            ) {
               this.selectUser(this.state.selectedContact);
             }
           });
@@ -132,7 +137,7 @@ class MainPage extends React.Component {
     this.state.chat = false;
     api("GET", "/messages/" + user._id, this.renderMessagesApiResponse); // eslint-disable-line
     this.setState({ selectedContact: user });
-    if(this.state.deviceWidth<2){
+    if (this.state.deviceWidth < 2) {
       this.state.notificationsPannelOpen = false;
       this.state.guestsListOpen = false;
       this.setState(this.state);
@@ -161,72 +166,84 @@ class MainPage extends React.Component {
   sendMessage(e) {
     e.preventDefault();
     var msgInput = document.querySelector("#messageInputBox");
-    api("POST","/message/" + this.state.selectedContact._id, // eslint-disable-line
+    api(// eslint-disable-line
+      "POST",
+      "/message/" + this.state.selectedContact._id, 
       this.handleMessageSendingApiResponse,
       { content: msgInput.value }
     );
     msgInput.classList.add("loading");
   }
-  handleMessageDeletion(e, id){
+  handleMessageDeletion(e, id) {
     var msg = document.getElementById(id);
     msg.classList.remove("loading");
-    switch(e.target.status){
+    switch (e.target.status) {
       case 204:
-        this.state.chat = this.state.chat.filter(
-          msg => {
-            return msg._id !==id
-          }
-        );
+        this.state.chat = this.state.chat.filter(msg => {
+          return msg._id !== id;
+        });
         this.setState(this.state);
-      break;
+        break;
       default:
         alert("Failed to delete message!");
     }
   }
-  handleEditingMessage(e, id, newContent){
+  handleEditingMessage(e, id, newContent) {
     var msg = document.getElementById(id);
     msg.classList.remove("loading");
-    switch(e.target.status){
+    switch (e.target.status) {
       case 204:
-        for(var i=0; i < this.state.chat.length; i++){
-          if(this.state.chat[i]._id === id){
+        for (var i = 0; i < this.state.chat.length; i++) {
+          if (this.state.chat[i]._id === id) {
             this.state.chat[i].content = newContent;
           }
         }
         this.setState(this.state);
-      break;
+        break;
       default:
         alert("Failed to edit message!");
     }
   }
-  requestEditingMessage(id, msg){
+  requestEditingMessage(id, msg) {
     let newMsg = prompt("Edit message", msg);
-    if(!newMsg || !newMsg.length) return;
+    if (!newMsg || !newMsg.length) return;
     var msg = document.getElementById(id);
     msg.classList.add("loading");
     let handler = this.handleEditingMessage;
-    api("PATCH","/message/" + id, // eslint-disable-line
-      function (e){
+    api(// eslint-disable-line
+      "PATCH",
+      "/message/" + id, 
+      function(e) {
         handler(e, id, newMsg);
       },
-      {content: newMsg}
+      { content: newMsg }
     );
   }
-  requestMessageDelete(id){
-    if(!window.confirm("Are you sure you want to delete this message?")) return;
+  requestMessageDelete(id) {
+    if (!window.confirm("Are you sure you want to delete this message?"))
+      return;
     var msg = document.getElementById(id);
     msg.classList.add("loading");
     let handler = this.handleMessageDeletion;
-    api("DELETE","/message/" + id, // eslint-disable-line
-    function (e){
-      handler(e, id);
-    });
+    api(// eslint-disable-line
+      "DELETE",
+      "/message/" + id, 
+      function(e) {
+        handler(e, id);
+      }
+    );
   }
-  closeChat(){
+  closeChat() {
     this.state.selectedContact = {};
     this.state.chat = false;
     this.state.guestsListOpen = true;
     this.setState(this.state);
+  }
+  logout(){
+    if(!window.confirm("Are you sure you want to log out?")) return;
+    document.cookie = 'guestname=; expires=Thu, 01-Jan-1970 00:00:01 GMT;';
+    document.cookie = 'sessionid=; expires=Thu, 01-Jan-1970 00:00:01 GMT;';
+    window.location.reload();
   }
   render() {
     return (
@@ -236,12 +253,25 @@ class MainPage extends React.Component {
             <span className="navLeft">
               Welcome to The GuestBook {this.props.login}!
             </span>
-            <span onClick={this.toggleNotificationsPannel} className="navRight clickable"> ✉ {this.state.unread.length} </span>
+            <span
+              onClick={this.logout}
+              className="navRight clickable"
+            > ⮫ 
+            </span>
+            <span
+              onClick={this.toggleNotificationsPannel}
+              className="navRight clickable"
+            >
+              {" "}
+              ✉ {this.state.unread.length}{" "}
+            </span>
           </h2>
         </div>
         <div className="mainPageContainer">
           <ol className="guests" hidden={!this.state.guestsListOpen}>
-            <li><h2>Guests</h2></li>
+            <li>
+              <h2>Guests</h2>
+            </li>
             {this.state.guests.map(user => (
               <li
                 data-time={user.registered}
@@ -254,15 +284,22 @@ class MainPage extends React.Component {
               </li>
             ))}
           </ol>
-          <div className="chatBox" hidden={this.state.chat === undefined || this.state.chat === false}>
+          <div
+            className="chatBox"
+            hidden={this.state.chat === undefined || this.state.chat === false}
+          >
             <div className="chatStatus">
               <h3>
                 {this.state.selectedContact.username
                   ? this.state.selectedContact.username
                   : "Choose a guest to message"}
-                  {this.state.selectedContact.username ? 
-                  (<span className="navRight clickable" onClick={this.closeChat}>X</span>):
-                  ""}
+                {this.state.selectedContact.username ? (
+                  <span className="navRight clickable" onClick={this.closeChat}>
+                    X
+                  </span>
+                ) : (
+                  ""
+                )}
               </h3>
             </div>
             <ul>
@@ -288,16 +325,38 @@ class MainPage extends React.Component {
                     }
                   >
                     {msg.content}
-                    {msg.sender == this.state.selectedContact._id? "":
-                    (<p className="msgfooter">
-                      <span className="clickable" onClick={() => {this.requestEditingMessage(msg._id, msg.content)}}> 🖊 </span>
-                      <span className="clickable" onClick={() => {this.requestMessageDelete(msg._id)}}> 🗑 </span>
-                    </p>)}
+                    {msg.sender == this.state.selectedContact._id ? (
+                      ""
+                    ) : (
+                      <p className="msgfooter">
+                        <span
+                          className="clickable"
+                          onClick={() => {
+                            this.requestEditingMessage(msg._id, msg.content);
+                          }}
+                        >
+                          {" "}
+                          🖊{" "}
+                        </span>
+                        <span
+                          className="clickable"
+                          onClick={() => {
+                            this.requestMessageDelete(msg._id);
+                          }}
+                        >
+                          {" "}
+                          🗑{" "}
+                        </span>
+                      </p>
+                    )}
                   </li>
                 ))
               ) : (
                 <div>
-                  <p>Nothing here<br /> Try sending a message</p>
+                  <p>
+                    Nothing here
+                    <br /> Try sending a message
+                  </p>
                 </div>
               )}
             </ul>
