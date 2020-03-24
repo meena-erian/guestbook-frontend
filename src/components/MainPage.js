@@ -75,14 +75,14 @@ class MainPage extends React.Component {
         </div>
         <div className="mainPageContainer">
           <ol className="guests">
-            <li>Mohamed</li>
-            <li>Amr</li>
-            <li>Abanob</li>
-            <li>Peter</li>
-            <li>Hagar</li>
-            <li>Esraa</li>
-            <li>Mary</li>
-            <li>Basant</li>
+            {
+              this.state.guests.map(
+                user =>
+                (
+                <li data-time = {user.registered} data-id = {user._id}>{user.username}</li>
+                )
+              )
+            }
           </ol>
           <div className="chatBox">
             <div className="chatStatus">
