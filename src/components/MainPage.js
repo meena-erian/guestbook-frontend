@@ -46,6 +46,9 @@ class MainPage extends React.Component {
           );
           apiResponse.messages.forEach(msg => {
             this.state.unread.push(msg);
+            if(this.state.selectedContact && msg.sender === this.state.selectedContact._id){
+              this.selectUser(this.state.selectedContact);
+            }
           });
         }
         if (apiResponse.users) {
