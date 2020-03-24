@@ -8,6 +8,7 @@ class MainPage extends React.Component {
     var notificationsPannelOpen = deviceWidth > 1 ? true : false;
     var selectedContact = {}; // This will change when the user opens chat with anyone
     this.state = {
+      lastStatusUpdate : 0,
       deviceWidth: deviceWidth,
       guestsListOpen: guestsListOpen,
       notificationsPannelOpen: notificationsPannelOpen,
@@ -26,10 +27,9 @@ class MainPage extends React.Component {
     this.requestUpdates();
     this.updateInterval = setInterval(this.requestUpdates, 5000);
   }
-  requestUpdates(index) {
+  requestUpdates() {
     console.log("Requesting status updates from the server");
-    var uri = "/notification";
-    if (index) uri = "/notification?index=" + index;
+    let uri = "/notification?index=" + this.state.lastStatusUpdate;
     api("GET", uri, this.handleUpdates); // eslint-disable-line
   }
   handleUpdates(e) {
@@ -50,6 +50,16 @@ class MainPage extends React.Component {
           apiResponse.users.forEach(user => {
             this.state.guests.push(user);
           });
+        }
+        if(this.state.guests){
+          var timeLastRegisteredUser = this.state.guests[this.state.guests.length-1].registered;
+          if(timeLastRegisteredUser > this.state.lastStatusUpdate)
+          this.state.lastStatusUpdate = timeLastRegisteredUser;
+        }
+        if(this.state.messages){
+          var timeLastUnreadMessage = this.state.messages[this.state.messages.length-1].time;
+          if(timeLastUnreadMessage > this.state.lastStatusUpdate)
+          this.state.lastStatusUpdate = timeLastUnreadMessage;
         }
         this.setState(this.state);
         break;
