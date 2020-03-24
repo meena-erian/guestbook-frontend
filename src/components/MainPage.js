@@ -6,7 +6,7 @@ class MainPage extends React.Component {
     var deviceWidth = Math.floor(window.innerWidth / 300); // This will define how many components can the window be horizontally divided into
     var guestsListOpen = true;
     var notificationsPannelOpen = deviceWidth > 1 ? true : false;
-    var selectedContact = ""; // This will change when the user opens chat with anyone
+    var selectedContact = {}; // This will change when the user opens chat with anyone
     this.state = {
       deviceWidth: deviceWidth,
       guestsListOpen: guestsListOpen,
@@ -18,7 +18,12 @@ class MainPage extends React.Component {
     };
     this.requestUpdates = this.requestUpdates.bind(this);
     this.handleUpdates = this.handleUpdates.bind(this);
+    this.selectUser = this.selectUser.bind(this);
     //this.requestUpdates();
+    
+  }
+  componentDidMount(){
+    this.requestUpdates();
     this.updateInterval = setInterval(this.requestUpdates, 5000);
   }
   requestUpdates(index) {
@@ -63,7 +68,11 @@ class MainPage extends React.Component {
         console.log(e);
     }
   }
-
+  selectUser(user) {
+    this.setState({selectedContact : user});
+    console.log("Selecting user:");
+    console.log(user);
+  }
   render() {
     return (
       <div>
@@ -75,18 +84,23 @@ class MainPage extends React.Component {
         </div>
         <div className="mainPageContainer">
           <ol className="guests">
-            {
-              this.state.guests.map(
-                user =>
-                (
-                <li data-time = {user.registered} data-id = {user._id}>{user.username}</li>
-                )
-              )
-            }
+            {this.state.guests.map(user => (
+              <li
+                data-time={user.registered}
+                data-id={user._id}
+                onClick={() => {this.selectUser(user);}}
+              >
+                {user.username}
+              </li>
+            ))}
           </ol>
           <div className="chatBox">
             <div className="chatStatus">
-              <h3>Peter</h3>
+              <h3>
+                {this.state.selectedContact.username ?  
+                  this.state.selectedContact.username :
+                  "Choose a guest to message"}
+              </h3>
             </div>
             <ul>
               <li className="sentMessage">
