@@ -21,10 +21,13 @@ class MainPage extends React.Component {
     this.handleUpdates = this.handleUpdates.bind(this);
     this.selectUser = this.selectUser.bind(this);
     this.renderMessagesApiResponse = this.renderMessagesApiResponse.bind(this);
-    this.handleMessageSendingApiResponse = this.handleMessageSendingApiResponse.bind(
-      this
-    );
+    this.handleMessageSendingApiResponse = this.handleMessageSendingApiResponse.bind(this);
+    this.toggleNotificationsPannel = this.toggleNotificationsPannel.bind(this);
     //this.requestUpdates();
+  }
+  toggleNotificationsPannel(){
+    this.state.notificationsPannelOpen = !this.state.notificationsPannelOpen;
+    this.setState(this.state);
   }
   componentDidMount() {
     this.requestUpdates();
@@ -163,7 +166,7 @@ class MainPage extends React.Component {
             <span className="navLeft">
               Welcome to The GuestBook {this.props.login}!
             </span>
-            <span className="navRight"> ✉ {this.state.unread.length} </span>
+            <span onClick={this.toggleNotificationsPannel} className="navRight"> ✉ {this.state.unread.length} </span>
           </h2>
         </div>
         <div className="mainPageContainer">
