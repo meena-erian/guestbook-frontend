@@ -1,9 +1,7 @@
 import React from "react";
 
 class NotificationsPannel extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+
   /*
     Required props
     --------------

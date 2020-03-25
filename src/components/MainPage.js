@@ -37,8 +37,7 @@ class MainPage extends React.Component {
     //this.requestUpdates();
   }
   toggleNotificationsPannel() {
-    this.state.notificationsPannelOpen = !this.state.notificationsPannelOpen;
-    this.setState(this.state);
+    this.setState({ notificationsPannelOpen : !this.state.notificationsPannelOpen});
   }
   componentDidMount() {
     this.requestUpdates();

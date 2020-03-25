@@ -1,10 +1,6 @@
 import React from "react";
 
 class ChatBox extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   /*
     Required props
     --------------
@@ -52,13 +48,13 @@ class ChatBox extends React.Component {
                 data-time={msg.time}
                 data-status={msg.status}
                 className={
-                  msg.sender == this.props.user._id
+                  msg.sender === this.props.user._id
                     ? ""
                     : "sentMessage"
                 }
               >
                 {msg.content}
-                {msg.sender == this.props.user._id ? (
+                {msg.sender === this.props.user._id ? (
                   ""
                 ) : (
                   <p className="msgfooter">
