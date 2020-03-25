@@ -58,35 +58,36 @@ class MainPage extends React.Component {
           console.log(
             apiResponse.messages.length + " new messages has arrived"
           );
+          var newState = this.state;
           apiResponse.messages.forEach(msg => {
-            this.state.unread.push(msg);
+            newState.unread.push(msg);
             if (
-              this.state.selectedContact &&
-              msg.sender === this.state.selectedContact._id
+              newState.selectedContact &&
+              msg.sender === newState.selectedContact._id
             ) {
-              this.selectUser(this.state.selectedContact);
+              this.selectUser(newState.selectedContact);
             }
           });
         }
         if (apiResponse.users) {
           console.log(apiResponse.users.length + " new users are registered");
           apiResponse.users.forEach(user => {
-            this.state.guests.push(user);
+            newState.guests.push(user);
           });
         }
         if (apiResponse.users) {
           var timeLastRegisteredUser =
             apiResponse.users[apiResponse.users.length - 1].registered;
-          if (timeLastRegisteredUser > this.state.lastStatusUpdate)
-            this.state.lastStatusUpdate = timeLastRegisteredUser;
+          if (timeLastRegisteredUser > newState.lastStatusUpdate)
+           newState.lastStatusUpdate = timeLastRegisteredUser;
         }
         if (apiResponse.messages) {
           var timeLastUnreadMessage =
             apiResponse.messages[apiResponse.messages.length - 1].time;
-          if (timeLastUnreadMessage > this.state.lastStatusUpdate)
-            this.state.lastStatusUpdate = timeLastUnreadMessage;
+          if (timeLastUnreadMessage > newState.lastStatusUpdate)
+          newState.lastStatusUpdate = timeLastUnreadMessage;
         }
-        this.setState(this.state);
+        this.setState(newState);
         break;
       case 204:
         console.log(
@@ -110,40 +111,37 @@ class MainPage extends React.Component {
         console.log("Messages fetched successfully");
         var apiResponse = JSON.parse(e.target.response);
         console.log(apiResponse);
-        if (typeof this.state.chat !== "array") this.state.chat = [];
+        if (typeof (this.state.chat) !== "object") this.setState({chat : []});
+        var newState = this.state;
         apiResponse.forEach(msg => {
-          this.state.chat.push(msg);
+          newState.chat.push(msg);
         });
-        let currentUser = this.state.selectedContact._id;
-        this.state.unread = this.state.unread.filter(function(msg) {
+        let currentUser = newState.selectedContact._id;
+        newState.unread = newState.unread.filter(function(msg) {
           return msg.sender !== currentUser;
         });
-        this.setState(this.state);
+        this.setState(newState);
         break;
       case 204:
         console.log("No Messages");
         if (this.state.chat === false) {
-          this.state.chat = [];
+          this.setState({ chat : []});
         }
-        this.setState(this.state);
         break;
-      case 404:
+      //case 404:
       //break;
-      case 401:
+      //case 401:
       //break;
       default:
         console.log("Something went wrong");
     }
   }
   selectUser(user) {
-    this.state.selectedContact = user;
-    this.state.chat = false;
+    this.setState({ selectedContact : user,
+    chat : false});
     api("GET", "/messages/" + user._id, this.renderMessagesApiResponse); // eslint-disable-line
-    this.setState(this.state);
     if (this.state.deviceWidth < 2) {
-      this.state.notificationsPannelOpen = false;
-      this.state.guestsListOpen = false;
-      this.setState(this.state);
+      this.setState({ notificationsPannelOpen : false, guestsListOpen : false});
     }
   }
   handleMessageSendingApiResponse(e) {
@@ -154,13 +152,14 @@ class MainPage extends React.Component {
         console.log("Message delivered successfully!");
         var apiResponse = JSON.parse(e.target.response);
         console.log(apiResponse);
-        this.state.chat.push(apiResponse);
-        this.setState(this.state);
+        var newChat = this.state.chat;
+        newChat.push(apiResponse);
+        this.setState({chat : newChat});
         msgInput.value = "";
         break;
-      case 404:
+      //case 404:
       //break;
-      case 401:
+      //case 401:
       //break;
       default:
         console.log("Failed to send message");
@@ -182,10 +181,9 @@ class MainPage extends React.Component {
     msg.classList.remove("loading");
     switch (e.target.status) {
       case 204:
-        this.state.chat = this.state.chat.filter(msg => {
+        this.setState({ chat : this.state.chat.filter(msg => {
           return msg._id !== id;
-        });
-        this.setState(this.state);
+        })});
         break;
       default:
         alert("Failed to delete message!");
@@ -196,19 +194,20 @@ class MainPage extends React.Component {
     msg.classList.remove("loading");
     switch (e.target.status) {
       case 204:
-        for (var i = 0; i < this.state.chat.length; i++) {
-          if (this.state.chat[i]._id === id) {
-            this.state.chat[i].content = newContent;
+        var newChat = this.state.chat;
+        for (var i = 0; i < newChat.length; i++) {
+          if (newChat[i]._id === id) {
+            newChat[i].content = newContent;
           }
         }
-        this.setState(this.state);
+        this.setState({ chat : newChat });
         break;
       default:
         alert("Failed to edit message!");
     }
   }
-  requestEditingMessage(id, msg) {
-    let newMsg = prompt("Edit message", msg);
+  requestEditingMessage(id, currentMsg) {
+    let newMsg = prompt("Edit message", currentMsg);
     if (!newMsg || !newMsg.length) return;
     var msg = document.getElementById(id);
     msg.classList.add("loading");
@@ -237,10 +236,7 @@ class MainPage extends React.Component {
     );
   }
   closeChat() {
-    this.state.selectedContact = {};
-    this.state.chat = false;
-    this.state.guestsListOpen = true;
-    this.setState(this.state);
+    this.setState({ selectedContact : {}, chat : false, guestsListOpen : true});
   }
   logout(){
     if(!window.confirm("Are you sure you want to log out?")) return;
