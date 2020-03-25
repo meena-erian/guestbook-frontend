@@ -47,15 +47,20 @@ body{
     transform: rotate(360deg);
   }
 }
-.AuthenticationForm > input {
+.AuthenticationForm > div{
   display: block;
   margin: 40px;
   width: -webkit-fill-available;
   width: -moz-available;
+}
+.AuthenticationForm input {
+  display: block;
   padding: 7px;
   font-weight: 600;
   border-radius: 5px;
   border: 0px;
+  width: -webkit-fill-available;
+  width: -moz-available;
 }
 
 .AuthenticationForm {
@@ -103,6 +108,11 @@ body{
 .guests h2{
   text-align: center;
   border-bottom: 2px solid;
+}
+
+.hiddenWrapper{
+  position: relative;
+  display: contents;
 }
 
 .guests > li {
@@ -196,4 +206,15 @@ body{
 .msgfooter{
   margin-bottom: 0;
   text-align: right;
+}
+
+.warning{
+  color: brown;
+  font-size: 16px;
+  font-style: italic;
+  font-weight: bold;
+  position: absolute;
+  text-shadow: 0 0 10px powderblue;
+  top: 35px;
+  left: 0;
 }
