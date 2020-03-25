@@ -1,4 +1,5 @@
 import React from "react";
+import NotificationsPannel from "./NotificationsPannel";
 
 class MainPage extends React.Component {
   constructor(props) {
@@ -369,29 +370,11 @@ class MainPage extends React.Component {
               <input type="submit" value="Send" />
             </form>
           </div>
-          <ul
-            className="notificationPanel"
-            hidden={!this.state.notificationsPannelOpen}
-          >
-            {this.state.unread.map(notif => (
-              <li
-                data-msg={notif._id}
-                data-user={notif.sender}
-                data-time={notif.time}
-                data-status={notif.status}
-                onClick={() => {
-                  this.selectUser({
-                    username: notif.senderName,
-                    _id: notif.sender
-                  });
-                }}
-              >
-                <b>{notif.senderName}: </b>
-                {notif.content.substring(0, 10)}
-                {notif.content.length > 10 ? "..." : ""}
-              </li>
-            ))}
-          </ul>
+          <NotificationsPannel 
+            isOpen={this.state.notificationsPannelOpen}
+            notifications={this.state.unread}
+            clickCallback={this.selectUser}
+          />
         </div>
       </div>
     );
