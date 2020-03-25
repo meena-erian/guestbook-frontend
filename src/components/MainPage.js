@@ -1,5 +1,6 @@
 import React from "react";
 import NotificationsPannel from "./NotificationsPannel";
+import ChatBox from "./ChatBox";
 
 class MainPage extends React.Component {
   constructor(props) {
@@ -31,6 +32,7 @@ class MainPage extends React.Component {
     this.requestEditingMessage = this.requestEditingMessage.bind(this);
     this.handleEditingMessage = this.handleEditingMessage.bind(this);
     this.closeChat = this.closeChat.bind(this);
+    this.sendMessage = this.sendMessage.bind(this);
     //this.requestUpdates();
   }
   toggleNotificationsPannel() {
@@ -285,91 +287,13 @@ class MainPage extends React.Component {
               </li>
             ))}
           </ol>
-          <div
-            className="chatBox"
-            hidden={this.state.chat === undefined || this.state.chat === false}
-          >
-            <div className="chatStatus">
-              <h3>
-                {this.state.selectedContact.username
-                  ? this.state.selectedContact.username
-                  : "Choose a guest to message"}
-                {this.state.selectedContact.username ? (
-                  <span className="navRight clickable" onClick={this.closeChat}>
-                    X
-                  </span>
-                ) : (
-                  ""
-                )}
-              </h3>
-            </div>
-            <ul>
-              {this.state.chat === undefined ? (
-                <div>
-                  <li>No contact selected!</li>
-                  <li>Welcome to the guestbook app</li>
-                </div>
-              ) : this.state.chat === false ? (
-                <div>
-                  <li>Hang on! the chat is loading...</li>
-                </div>
-              ) : this.state.chat.length ? (
-                this.state.chat.map(msg => (
-                  <li
-                    id={msg._id}
-                    data-time={msg.time}
-                    data-status={msg.status}
-                    className={
-                      msg.sender == this.state.selectedContact._id
-                        ? ""
-                        : "sentMessage"
-                    }
-                  >
-                    {msg.content}
-                    {msg.sender == this.state.selectedContact._id ? (
-                      ""
-                    ) : (
-                      <p className="msgfooter">
-                        <span
-                          className="clickable"
-                          onClick={() => {
-                            this.requestEditingMessage(msg._id, msg.content);
-                          }}
-                        >
-                          {" "}
-                          🖊{" "}
-                        </span>
-                        <span
-                          className="clickable"
-                          onClick={() => {
-                            this.requestMessageDelete(msg._id);
-                          }}
-                        >
-                          {" "}
-                          🗑{" "}
-                        </span>
-                      </p>
-                    )}
-                  </li>
-                ))
-              ) : (
-                <div>
-                  <p>
-                    Nothing here
-                    <br /> Try sending a message
-                  </p>
-                </div>
-              )}
-            </ul>
-            <form onSubmit={e => this.sendMessage(e)} className="messagingForm">
-              <input
-                id="messageInputBox"
-                placeholder="Write a message"
-                type="text"
-              />
-              <input type="submit" value="Send" />
-            </form>
-          </div>
+          <ChatBox       
+          messages = {this.state.chat}
+          user = {this.state.selectedContact}
+          onMessageEdit = {this.requestEditingMessage}
+          onMessageDelete = {this.requestMessageDelete}
+          onMessageSubmit = {this.sendMessage}
+          />
           <NotificationsPannel 
             isOpen={this.state.notificationsPannelOpen}
             notifications={this.state.unread}
