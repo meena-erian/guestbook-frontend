@@ -1,6 +1,7 @@
 import React from "react";
 import NotificationsPannel from "./NotificationsPannel";
 import ChatBox from "./ChatBox";
+import ContactList from "./ContactList";
 
 class MainPage extends React.Component {
   constructor(props) {
@@ -271,28 +272,17 @@ class MainPage extends React.Component {
           </h2>
         </div>
         <div className="mainPageContainer">
-          <ol className="guests" hidden={!this.state.guestsListOpen}>
-            <li>
-              <h2>Guests</h2>
-            </li>
-            {this.state.guests.map(user => (
-              <li
-                data-time={user.registered}
-                data-id={user._id}
-                onClick={() => {
-                  this.selectUser(user);
-                }}
-              >
-                {user.username}
-              </li>
-            ))}
-          </ol>
+          <ContactList 
+            isOpen = {this.state.guestsListOpen}
+            users = {this.state.guests}
+            clickCallback = {this.selectUser}
+          />
           <ChatBox       
-          messages = {this.state.chat}
-          user = {this.state.selectedContact}
-          onMessageEdit = {this.requestEditingMessage}
-          onMessageDelete = {this.requestMessageDelete}
-          onMessageSubmit = {this.sendMessage}
+            messages = {this.state.chat}
+            user = {this.state.selectedContact}
+            onMessageEdit = {this.requestEditingMessage}
+            onMessageDelete = {this.requestMessageDelete}
+            onMessageSubmit = {this.sendMessage}
           />
           <NotificationsPannel 
             isOpen={this.state.notificationsPannelOpen}
