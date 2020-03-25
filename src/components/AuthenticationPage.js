@@ -6,7 +6,7 @@ class AuthenticationPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      userAlreadyRegistered: true
+      userAlreadyRegistered: false
     };
     this.userWantsToLogin = this.userWantsToLogin.bind(this);
     this.userWantsToRegister = this.userWantsToRegister.bind(this);
