@@ -195,9 +195,18 @@ body{
   color: var(--code4);
   cursor: pointer;
 }
+.clickable img{
+  height: 1em;
+  filter:invert();
+  vertical-align: middle;
+}
 .clickable:hover{
   color: white;
-  font-weight: bolder;
+  /*font-weight: bolder;*/
+}
+.clickable img:hover{
+  /*filter: drop-shadow(1px 1px 2px white);*/
+  filter: none;
 }
 .loading{
   background-image: url('/loading.gif');

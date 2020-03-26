@@ -60,13 +60,13 @@ class ChatBox extends React.Component {
                 ) : (
                   <p className="msgfooter">
                     <span
+                      style={{float : "left"}}
                       className="clickable"
                       onClick={() => {
                         this.props.onMessageEdit(msg._id, msg.content);
                       }}
                     >
-                      {" "}
-                      🖊{" "}
+                      <img src="/edit.png" alt="🖊" />
                     </span>
                     <span
                       className="clickable"
@@ -74,8 +74,7 @@ class ChatBox extends React.Component {
                         this.props.onMessageDelete(msg._id);
                       }}
                     >
-                      {" "}
-                      🗑{" "}
+                      <img src="/trash.png" alt="🗑" />
                     </span>
                   </p>
                 )}

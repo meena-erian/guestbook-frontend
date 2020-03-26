@@ -255,14 +255,44 @@ class MainPage extends React.Component {
             <span
               onClick={this.logout}
               className="navRight clickable"
-            > ⮫ 
+            > <img style={{
+              position: "absolute",
+              height: 35,
+              top: 9,
+              right: 8,
+            }} src="/logout.png" alt = "⮫"/>
             </span>
             <span
               onClick={this.toggleNotificationsPannel}
-              className="navRight clickable"
+              className={this.state.unread.length > 0? "navRight clickable": "navRight"}
             >
-              {" "}
-              ✉ {this.state.unread.length}{" "}
+              <img src="/envelope.png" 
+              style={{
+                height: 68,
+                position: "absolute",
+                right: 50,
+                top: -9}}
+              alt = "✉"/> 
+              {this.state.unread.length > 0 ? 
+              <abbr 
+              title={"You have " + this.state.unread.length + " unread messages"}
+              style={
+                {
+                  position: "absolute",
+                  top: 5,
+                  right: 58,
+                  fontSize: 16,
+                  background: "orange",
+                  paddingRight: 7,
+                  paddingLeft: 7,
+                  borderRadius: 32,
+                  color: "var(--code5)",
+                  textDecoration: "none"
+                }
+              }
+              >
+                {this.state.unread.length}
+              </abbr> : ""}
             </span>
           </h2>
         </div>
