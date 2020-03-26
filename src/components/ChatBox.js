@@ -9,6 +9,7 @@ class ChatBox extends React.Component {
       this.props.onMessageEdit = parent.requestEditingMessage
       this.props.onMessageDelete = parent.requestMessageDelete
       this.props.onMessageSubmit = parent.sendMessage
+      this.props.onClose = parent.closeChat
   */
 
   render() {
@@ -23,7 +24,7 @@ class ChatBox extends React.Component {
               ? this.props.user.username
               : "Choose a guest to message"}
             {this.props.user.username ? (
-              <span className="navRight clickable" onClick={this.closeChat}>
+              <span className="navRight clickable" onClick={this.props.onClose}>
                 X
               </span>
             ) : (

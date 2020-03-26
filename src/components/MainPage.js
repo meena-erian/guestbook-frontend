@@ -278,6 +278,7 @@ class MainPage extends React.Component {
             onMessageEdit = {this.requestEditingMessage}
             onMessageDelete = {this.requestMessageDelete}
             onMessageSubmit = {this.sendMessage}
+            onClose = {this.closeChat}
           />
           <NotificationsPannel 
             isOpen={this.state.notificationsPannelOpen}
