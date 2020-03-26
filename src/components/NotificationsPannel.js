@@ -15,6 +15,7 @@ class NotificationsPannel extends React.Component {
       <ul className="notificationPanel" hidden={!this.props.isOpen}>
         {this.props.notifications.map(notif => (
           <li
+            key={notif._id}
             data-msg={notif._id}
             data-user={notif.sender}
             data-time={notif.time}

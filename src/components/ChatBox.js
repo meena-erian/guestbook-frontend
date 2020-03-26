@@ -45,6 +45,7 @@ class ChatBox extends React.Component {
           ) : this.props.messages.length ? (
             this.props.messages.map(msg => (
               <li
+                key={msg._id}
                 id={msg._id}
                 data-time={msg.time}
                 data-status={msg.status}

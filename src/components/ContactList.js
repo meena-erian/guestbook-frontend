@@ -18,6 +18,7 @@ class ContactList extends React.Component {
         </li>
         {this.props.users.map(user => (
           <li
+            key={user._id}
             className = "clickable contact"
             data-time={user.registered}
             data-id={user._id}
