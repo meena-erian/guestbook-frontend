@@ -52,13 +52,14 @@ class MainPage extends React.Component {
     console.log("Server responce arrived");
     switch (e.target.status) {
       case 200:
+        var newState = this.state;
         var apiResponse = JSON.parse(e.target.response);
         if (apiResponse.messages) {
-          window.beep.play(); // eslint-disable-line
+          if(window.beep)
+            window.beep.play(); // eslint-disable-line
           console.log(
             apiResponse.messages.length + " new messages has arrived"
           );
-          var newState = this.state;
           apiResponse.messages.forEach(msg => {
             newState.unread.push(msg);
             if (
@@ -246,7 +247,7 @@ class MainPage extends React.Component {
   }
   render() {
     return (
-      <div>
+      <div> 
         <div className="navBar">
           <h2>
             <span className="navLeft">
