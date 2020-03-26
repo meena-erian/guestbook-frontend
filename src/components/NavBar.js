@@ -15,7 +15,7 @@ class NavBar extends React.Component{
             <div className="navBar">
             <h2>
               <span className="navLeft">
-                Welcome to The GuestBook {this.props.username}!
+        Welcome{(this.props.deviceWidth > 1? " to The GuestBook," : ", ") + this.props.username}!
               </span>
               <span
                 onClick={this.props.onLogout}
