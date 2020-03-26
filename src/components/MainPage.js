@@ -2,6 +2,7 @@ import React from "react";
 import NotificationsPannel from "./NotificationsPannel";
 import ChatBox from "./ChatBox";
 import ContactList from "./ContactList";
+import NavBar from "./NavBar";
 
 class MainPage extends React.Component {
   constructor(props) {
@@ -248,55 +249,13 @@ class MainPage extends React.Component {
   render() {
     return (
       <div> 
-        <div className="navBar">
-          <h2>
-            <span className="navLeft">
-              Welcome to The GuestBook {this.props.login}!
-            </span>
-            <span
-              onClick={this.logout}
-              className="navRight clickable"
-            > <img style={{
-              position: "absolute",
-              height: 35,
-              top: 9,
-              right: 8,
-            }} src="/logout.png" alt = "⮫"/>
-            </span>
-            <span
-              onClick={this.toggleNotificationsPannel}
-              className={this.state.unread.length > 0? "navRight clickable": "navRight"}
-            >
-              <img src="/envelope.png" 
-              style={{
-                height: 68,
-                position: "absolute",
-                right: 50,
-                top: -9}}
-              alt = "✉"/> 
-              {this.state.unread.length > 0 ? 
-              <abbr 
-              title={"You have " + this.state.unread.length + " unread messages"}
-              style={
-                {
-                  position: "absolute",
-                  top: 5,
-                  right: 58,
-                  fontSize: 16,
-                  background: "orange",
-                  paddingRight: 7,
-                  paddingLeft: 7,
-                  borderRadius: 32,
-                  color: "var(--code5)",
-                  textDecoration: "none"
-                }
-              }
-              >
-                {this.state.unread.length}
-              </abbr> : ""}
-            </span>
-          </h2>
-        </div>
+        <NavBar 
+            username = {this.props.login}
+            onLogout = {this.logout}
+            onEnvelopeClick = {this.toggleNotificationsPannel}
+            notifications = {this.state.unread}
+            deviceWidth = {this.state.deviceWidth}
+        />
         <div className="mainPageContainer">
           <ContactList 
             isOpen = {this.state.guestsListOpen}
