@@ -3,12 +3,14 @@
   <head>
     <meta charset="utf-8" />
     <script>
-    var beep = document.createElement("audio");
+	window.onload = function (){
+    window.beep = document.createElement("audio");
     beep.src = "/beep.mp3";
     beep.setAttribute("preload", "auto");
     beep.setAttribute("controls", "none");
     beep.style.display = "none";
     document.body.appendChild(beep);
+	}
     </script>
     <script>
       /*
