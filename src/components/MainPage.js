@@ -56,8 +56,8 @@ class MainPage extends React.Component {
         var newState = this.state;
         var apiResponse = JSON.parse(e.target.response);
         if (apiResponse.messages) {
-          if(window.beep)
-            window.beep.play(); // eslint-disable-line
+          //if(window.beep) // eslint-disable-line
+          //  window.beep.play(); // eslint-disable-line
           console.log(
             apiResponse.messages.length + " new messages has arrived"
           );
@@ -113,7 +113,8 @@ class MainPage extends React.Component {
         console.log("Messages fetched successfully");
         var apiResponse = JSON.parse(e.target.response);
         console.log(apiResponse);
-        if (typeof (this.state.chat) !== "object") this.setState({chat : []});
+        //if (typeof (this.state.chat) !== "object") this.setState({chat : []});
+		this.setState({chat : []});
         var newState = this.state;
         apiResponse.forEach(msg => {
           newState.chat.push(msg);
